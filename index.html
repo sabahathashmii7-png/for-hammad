@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Hammad ❤️</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+
+  .hearts {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: red;
+    transform: rotate(45deg);
+    animation: float 5s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(45deg); opacity: 0.7; }
+    100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+  }
+
+  .text {
+    position: relative;
+    z-index: 2;
+    max-width: 80%;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+</style>
+</head>
+<body>
+
+<div class="text" id="sceneText"></div>
+
+<script>
+  // Floating hearts
+  for(let i=0; i<30; i++){
+    const heart = document.createElement('div');
+    heart.className = 'hearts';
+    heart.style.left = Math.random()*100 + 'vw';
+    heart.style.animationDuration = (3 + Math.random()*5) + 's';
+    heart.style.width = (10 + Math.random()*20) + 'px';
+    heart.style.height = heart.style.width;
+    document.body.appendChild(heart);
+  }
+
+  // Scenes text
+  const scenes = [
+    "When my world started to fall into darkness… someone appeared.",
+    "Hammad… You came into my life early, and somehow… you became my reason to smile.",
+    "Your smile made me happy… Your eyes felt like the only eyes that ever mattered.",
+    "In your eyes, I found a place that felt safe… a place that felt like home.",
+    "But things changed… You thought I hated you… but I was only trying not to hurt you.",
+    "You never understood my feelings. You only saw negativity… never my effort.",
+    "Hammad… Snow Sniper… I tried. I truly tried.",
+    "But now… I’m letting go. Removing every memory from my heart… even the ones that once saved me.",
+    "Not because I never loved you… but because loving you hurts more than losing you."
+  ];
+
+  let current = 0;
+  const textEl = document.getElementById('sceneText');
+
+  function speakText(text){
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    // Choose a female voice if available
+    const voices = window.speechSynthesis.getVoices();
+    msg.voice = voices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('susan')) || voices[0];
+    msg.rate = 0.9; // slower reading
+    window.speechSynthesis.speak(msg);
+  }
+
+  function showScene() {
+    textEl.style.opacity = 0;
+    setTimeout(() => {
+      textEl.innerText = scenes[current];
+      textEl.style.opacity = 1;
+      speakText(scenes[current]);
+      current = (current + 1) % scenes.length;
+      setTimeout(showScene, 4000); // change scene every 4 seconds
+    }, 1000); // fade out duration
+  }
+
+  // Sometimes voices load after page, wait a bit
+  window.speechSynthesis.onvoiceschanged = () => {
+    showScene();
+  }
+</script>
+
+</body>
+</html>
